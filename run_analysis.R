@@ -56,18 +56,19 @@ readSet <- function(directory, x_labels){
         # go into the the inertial signals dir
         setwd("Inertial Signals")
         
+        # get all the file names in inertial signals
+        inertialSignals <- list.files()
+        
+        
         # column bind the rest of the data
-        result <- cbind(result,
-                        read.table(paste("body_acc_x_",directory,".txt"), col.names=createVariableNames("body_acc_x_",128)),
-                        read.table(paste("body_acc_y_" , directory, ".txt")),
-                        read.table(paste("body_acc_z_", directory, ".txt")),
-                        read.table(paste("body_gyro_x_", directory, ".txt")),
-                        read.table(paste("body_gyro_y_", directory, ".txt")),
-                        read.table(paste("body_gyro_z_", directory, ".txt")),
-                        read.table(paste("total_acc_x_", directory, ".txt")),
-                        read.table(paste("total_acc_y_", directory, ".txt")),
-                        read.table(paste("total_acc_z_", directory, ".txt"))
-        )
+        for(signalFile in inertialSignals){
+                
+                # Remove filename and suffix of test or train
+                signalName <- gsub(paste(directory,".txt",sep=""),"", signalFile)
+                
+                result <- cbind(result, 
+                                read.table(signalFile, col.names=createVariableNames(signalName, 128)))
+        }
         
         # reset directory
         setwd(old.dir)
@@ -97,6 +98,16 @@ readData <- function(){
         
         features <- read.table("features.txt")
         
-        test <- readSet("test", features[,2])
-        train <- readSet("train", features[,2])
+        # substitute out the commas with underscores 
+        x_labels <- sub("\\,","_",features[,2])
+        
+        # remove the hyphens next "-" 
+        x_labels <- gsub("-","_", x_labels)
+        # remove curly open bracket
+        x_labels <- gsub("\\(","", x_labels)
+        # remove curly close bracket
+        x_labels <- gsub("\\)","", x_labels)
+        
+        test <- readSet("test", x_labels)
+        train <- readSet("train", x_labels)
 }
