@@ -41,16 +41,24 @@ The output of this function is therefore bodyaccx1, bodyaccx2, bodyaccx3 etc.
 ### readSet Function
 
 The readSet function reads either of the two datasets. The readSet function takes two arguments. 
-The first argument is a character vector of length 1 indicating the location fo the files and 
+The first argument is a character vector of length 1 indicating the location of the files and 
 the datasets name (either test or train).  The second argument is a vector of x_labels as
 supplied by the features.txt after being cleaned. This cleaning is explained in the next function.
+
+The readSet function uses the data.table package. The data.table is faster then the data.frame,
+and is better at being manipulation.
+
+The name of the dataset is used to change the directory appropriately. Before the files are opened 
+the function checks to see if the subject, x and y  files are found in the folder and shows a
+message if not. 
+
 The readSet function uses the createVariableNames to create unique names for the inertial signals. 
 By using the name of the dataset the column names of both datasets should match insuring that a 
-merge is simpler.
+merge is simpler.  
 
-### readData Function
+### run_analysis Function
 
-The readData function uses the readset function to read the raw data files, depending on the name 
+The run_analysis function uses the readset function to read the raw data files, depending on the name 
 of the datasets. The function reads the activity names file activity_labels. The function reads
 the features.txt that lists the names of the X labels. A number of filters are run on these names
 as they would not be ideal. Commas "," are removed, as these would convert to dots ".". The names 

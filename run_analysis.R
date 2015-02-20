@@ -1,3 +1,6 @@
+# insures that the data table package is loaded
+install.packages("data.table")
+
 # create a vector of names
 
 createVariableNames <- function(name, len){
@@ -15,6 +18,9 @@ createVariableNames <- function(name, len){
         # numerical vector with the names of variables
         result
 }
+
+# loads the data.table
+library(data.table)
 
 # function to read either the test directory or the train directory
 
@@ -49,16 +55,17 @@ readSet <- function(directory, x_labels){
         # read the first vector Subject_
         # read in the X_ file with the colnames as the features
         # read in the Y_ file with the colnames activity
-        result <- cbind(read.table(subjectFileName, col.names=c("subjectid")), 
-                        read.table(xFileName, col.names=x_labels), 
-                        read.table(yFileName, col.names="activityid"))
+        result <- data.table(
+                        cbind(read.table(subjectFileName, col.names=c("subjectid")), 
+                                read.table(xFileName, col.names=x_labels), 
+                                read.table(yFileName, col.names="activityid"))
+        )
         
         # go into the the inertial signals dir
         setwd("Inertial Signals")
         
         # get all the file names in inertial signals
         inertialSignals <- list.files()
-        
         
         # column bind the rest of the data
         for(signalFile in inertialSignals){

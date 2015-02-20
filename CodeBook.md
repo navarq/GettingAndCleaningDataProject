@@ -8,7 +8,9 @@ SUMMARY: The source of the file is a study into wearable computing. The data for
 Samsung II smart phones strapped on the waist of 30 volunteers. Using the embedded accelerometer and gyroscope, 
 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz was collected.
 
-Each volunteer had perfomed six activities. 
+Each volunteer had perfomed six activities. The data orginal came from the Human Activity Recognition Using 
+Smartphones Dataset. With the authors Jorge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto.
+
 
 EXTENT OF COLLECTION: 
 
@@ -42,3 +44,9 @@ Before transformation the original 2 datasets test (2947 observations) and train
 a total of 10299 observations and 1715 variables.
   
 Codebook for test and train datasets 
+
+
+STUDYNAME:
+
+CODEBOOK:
+
