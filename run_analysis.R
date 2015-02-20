@@ -1,5 +1,6 @@
 # insures that the data table package is loaded
 install.packages("data.table")
+install.packages("dplyr")
 
 # create a vector of names
 
@@ -19,8 +20,9 @@ createVariableNames <- function(name, len){
         result
 }
 
-# loads the data.table
+# loads the data.table and dplyr 
 library(data.table)
+library(dplyr)
 
 # function to read either the test directory or the train directory
 
@@ -85,6 +87,31 @@ readSet <- function(directory, x_labels){
 
 run_analysis <- function(){
         
+        # hold old variable of directory location
+        
+        old.dir <- getwd()
+        
+        # create a new folder called data
+        if(!file.exists("data")){
+                dir.create("data")
+        }
+        
+        # do not download file and extract if it exists
+        if(!file.exists("./data/getdata.zip")){
+                # download the file
+                download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip", destfile="./data/getdata.zip")
+                
+                # Keep track of the date downloaded
+                dateDownloaded <- date()
+                
+                print(dateDownloaded)
+        }
+        
+        # extract the file to the data folder
+        unzip("./data/getdata.zip", exdir = "data", overwrite=TRUE)
+        # move to the data directory
+        setwd("./data/UCI HAR Dataset")
+
         # check if the test and train directories exist
         
         listdirs <- list.dirs()
@@ -92,10 +119,6 @@ run_analysis <- function(){
         if(!("./test" %in% listdirs) && !("./train" %in% listdirs)) {
                 message("test or train directories not found!")
         }
-        
-        # hold old variable of directory location
-        
-        old.dir <- getwd()
         
         # Get the descriptive names of the activities
         
@@ -118,6 +141,16 @@ run_analysis <- function(){
         # remove curly close bracket
         x_labels <- gsub("\\)","", x_labels)
         
+        # Read files as flat tables
         test <- readSet("test", x_labels)
+        
+        setkey(test,activityid)
+        
         train <- readSet("train", x_labels)
+        
+        setkey(train,activityid)
+        
+        # Merge the data frames
+        rawData <- merge(test, train)
+        setwd(old.dir)
 }

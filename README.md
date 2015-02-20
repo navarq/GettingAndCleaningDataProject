@@ -9,18 +9,12 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 The contents were extracted and the analysis files should be located with this extracted 
 main directory. Therefore the steps to run the analysis is as follows:
 
-Step 1: Download the file from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
-Step 2: Extract the contents of the file to a new folder (usually called getdata-projectfiles-UCI HAR Dataset)
+Step 1. Run R version 3.1.2. 
 
-Step 3. Plase the run_analysis.R file into this new folder. 
+Step 2. Run the command: source("run_analysis.R")
 
-Step 4. Within R set the working directory to this new folder.
-
-Step 5. Run the commands:
-
-source("run_analysis.R")
-run_analysis()
+Step 3. Run the command: run_analysis()
 
 ## Functions
 
