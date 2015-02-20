@@ -9,7 +9,7 @@ createVariableNames <- function(name, len){
         result <-  character(0)
         
         for(n in 1:len){
-                result <- rbind(result,paste(name,n,sep=""))
+                result <- rbind(result,paste0(name,n))
         }
         
         # numerical vector with the names of variables
@@ -29,19 +29,19 @@ readSet <- function(directory, x_labels){
         setwd(directory)
         
         # check if the subject file exists
-        subjectFileName <- paste("subject", "_", directory, ".txt", sep="")
+        subjectFileName <- paste0("subject", "_", directory, ".txt")
         if(!file.exists(subjectFileName)){
                 message("no subject file found!")
         }
         
         # check if the X file exists
-        xFileName <- paste("X", "_", directory, ".txt", sep="")
+        xFileName <- paste0("X", "_", directory, ".txt")
         if(!file.exists(xFileName)){
                 message("no subject file found!")
         }
         
         # check if the Y file exists
-        yFileName <- paste("y", "_", directory, ".txt", sep="")
+        yFileName <- paste0("y", "_", directory, ".txt")
         if(!file.exists(yFileName)){
                 message("no subject file found!")
         }
@@ -49,9 +49,9 @@ readSet <- function(directory, x_labels){
         # read the first vector Subject_
         # read in the X_ file with the colnames as the features
         # read in the Y_ file with the colnames activity
-        result <- cbind(read.table(subjectFileName, col.names=c("subjectId")), 
+        result <- cbind(read.table(subjectFileName, col.names=c("subjectid")), 
                         read.table(xFileName, col.names=x_labels), 
-                        read.table(yFileName, col.names="activity"))
+                        read.table(yFileName, col.names="activityid"))
         
         # go into the the inertial signals dir
         setwd("Inertial Signals")
@@ -64,7 +64,7 @@ readSet <- function(directory, x_labels){
         for(signalFile in inertialSignals){
                 
                 # Remove filename and suffix of test or train
-                signalName <- gsub(paste(directory,".txt",sep=""),"", signalFile)
+                signalName <- gsub(paste0(directory,".txt"),"", signalFile)
                 
                 result <- cbind(result, 
                                 read.table(signalFile, col.names=createVariableNames(signalName, 128)))
@@ -76,7 +76,7 @@ readSet <- function(directory, x_labels){
         result
 }
 
-readData <- function(){
+run_analysis <- function(){
         
         # check if the test and train directories exist
         
@@ -98,11 +98,14 @@ readData <- function(){
         
         features <- read.table("features.txt")
         
-        # substitute out the commas with underscores 
-        x_labels <- sub("\\,","_",features[,2])
+        # substitute out the commas 
+        x_labels <- sub("\\,","",features[,2])
+        
+        # remove the upper case values
+        x_labels <- tolower(x_labels)
         
         # remove the hyphens next "-" 
-        x_labels <- gsub("-","_", x_labels)
+        x_labels <- gsub("-","", x_labels)
         # remove curly open bracket
         x_labels <- gsub("\\(","", x_labels)
         # remove curly close bracket
