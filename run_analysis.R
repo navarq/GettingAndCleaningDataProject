@@ -1,3 +1,7 @@
+
+# loads the data.table and dplyr 
+require(data.table)
+
 # create a vector of names
 
 createVariableNames <- function(name, len){
@@ -16,18 +20,18 @@ createVariableNames <- function(name, len){
         result
 }
 
-# loads the data.table and dplyr 
-require(data.table)
-require(dplyr)
 
 # function to read either the test directory or the train directory
 
-readSet <- function(directory, x_labels){
+readSet <- function(directory, x_labels, lengthOfSequence){
         ## 'directory' is a character vector of length 1 indicating
         ## the location of the data set files
         
         ## 'x_labels' is a character vector of length 1 indicating
         ## the names of the x test
+        
+        ## lengthOfSequence is a numeric vector of length 1
+        ## that helps figure out a unique row index 
         
         old.dir <- getwd()
         setwd(directory)
@@ -38,7 +42,7 @@ readSet <- function(directory, x_labels){
                 message("no subject file found!")
         }
         
-        # check if the X file exists
+        #  if the X file exists
         xFileName <- paste0("X", "_", directory, ".txt")
         if(!file.exists(xFileName)){
                 message("no subject file found!")
@@ -51,16 +55,33 @@ readSet <- function(directory, x_labels){
         }
         
         # read the first vector Subject_
+        result <- cbind(fread(subjectFileName))
+        # rename the only column tota 
+        setnames(result,"V1","subjectid")
+        
+        # add a row index column by reference
+        startAt <- 0;
+        if(lengthOfSequence==1){
+                startAt<- 1
+        } 
+        else {
+                startAt = lengthOfSequence + 1        
+        }
+                
+        index <- as.character(seq(startAt,nrow(result)))
+        result[,':='(rowid, index)]
+        
+        # set this index as the key
+        setkey(result, rowid)
+        
+        # read in the Y_ file with the column name activityid
+        result[, activityid:=fread(yFileName)]
+        
         # read in the X_ file with the colnames as the features
-        # read in the Y_ file with the colnames activity
-        result <- data.table(
-                        cbind(fread(subjectFileName, sep=' '), 
-                              fread(xFileName, sep=' '), 
-                              fread(yFileName, sep=' '))
-        )
-        
-        colnames(result) <- c("subjectid", x_labels,"activityid")
-        
+        # unfortunately an issue with fread and double spaces
+        # prevents is use here
+        result <- cbind(result,as.data.table(read.table(xFileName, col.names=x_labels)))        
+
         # go into the the inertial signals dir
         setwd("Inertial Signals")
         
@@ -74,7 +95,7 @@ readSet <- function(directory, x_labels){
                 signalName <- gsub(paste0(directory,".txt"),"", signalFile)
                 
                 result <- cbind(result, 
-                                fread(signalFile, col.names=createVariableNames(signalName, 128)))
+                                read.table(signalFile, col.names=createVariableNames(signalName, 128)))
         }
         
         # reset directory
@@ -86,7 +107,6 @@ readSet <- function(directory, x_labels){
 run_analysis <- function(){
         
         # hold old variable of directory location
-        
         old.dir <- getwd()
         
         # create a new folder called data
@@ -97,21 +117,20 @@ run_analysis <- function(){
         # do not download file and extract if it exists
         if(!file.exists("./data/getdata.zip")){
                 # download the file
-                download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip", destfile="./data/getdata.zip")
+                download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip", 
+                              destfile="getdata.zip")
                 
                 # Keep track of the date downloaded
                 dateDownloaded <- date()
                 
                 print(dateDownloaded)
         }
-        
         # extract the file to the data folder
-        unzip("./data/getdata.zip", exdir = "data", overwrite=TRUE)
+        unzip("getdata.zip", exdir = "data", overwrite=TRUE)
         # move to the data directory
         setwd("./data/UCI HAR Dataset")
 
         # check if the test and train directories exist
-        
         listdirs <- list.dirs()
         
         if(!("./test" %in% listdirs) && !("./train" %in% listdirs)) {
@@ -119,12 +138,14 @@ run_analysis <- function(){
         }
         
         # Get the descriptive names of the activities
+        # , change them to lower
         
-        activity_labels <- fread("activity_labels.txt")
+        activity_labels <- fread("activity_labels.txt") 
+        activity_labels$V2 <- tolower(gsub("_","", activity_labels$V2))
         
-        # first get the names of features 
+        # get the names of features 
         
-        features <- fread("features.txt", sep = ' ')
+        features <- fread("features.txt")
         
         # substitute out the commas 
         x_labels <- sub("\\,","",features$V2)
@@ -139,16 +160,16 @@ run_analysis <- function(){
         # remove curly close bracket
         x_labels <- gsub("\\)","", x_labels)
         
+        # match only columns with mean and std in the name
+        meanStdColumns<-grep("[m][e][a][n]|[s][t][d]", x_labels)
+        
         # Read files as flat tables
-        test <- readSet("test", x_labels)
-        
-        setkey(test,activityid)
-        
-        train <- readSet("train", x_labels)
-        
-        setkey(train,activityid)
+        #test <- readSet("test", x_labels, 1)
+        test <- readSet("test", x_labels, meanStdColumns)
+        #train <- readSet("train", x_labels, nrow(test))
+        train <- readSet("train", x_labels, meanStdColumns)
+        setwd(old.dir)
         
         # Merge the data frames
-        rawData <- merge(test, train)
-        setwd(old.dir)
+        joinData <- rbind(trainData, testData)
 }

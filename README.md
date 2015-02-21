@@ -7,8 +7,7 @@ original set of files to the tidy data. The source file was downloaded from
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
 The contents were extracted and the analysis files should be located with this extracted 
-main directory. Therefore the steps to run the analysis is as follows:
-
+main directory. Therefore the steps to run the analysis are as follows:
 
 Step 1. Run R version 3.1.2. 
 
@@ -18,7 +17,8 @@ Step 3. Run the command: run_analysis()
 
 ## Functions
 
-The run_analysis.R contains all the functions for doing the analysis.
+The run_analysis.R contains all the functions for doing the analysis. The libraries data.table
+and dplyr are required hence referenced at the top.
 
 ### createVariableNames Function
 
@@ -53,9 +53,13 @@ merge is simpler.
 ### run_analysis Function
 
 The run_analysis function uses the readset function to read the raw data files, depending on the name 
-of the datasets. The function reads the activity names file activity_labels. The function reads
-the features.txt that lists the names of the X labels. A number of filters are run on these names
-as they would not be ideal. Commas "," are removed, as these would convert to dots ".". The names 
+of the datasets. Run analysis creates a new directory for the data called data. The function 
+downloads the data from the online source given above to a file named getdata.zip located in this 
+directory and outputs the date. The function extracts this data within a "data" directory. 
+
+The function reads the activity names file activity_labels. The function reads the features.txt 
+that lists the names of the X labels. A number of filters are run on these names as they would 
+not be ideal. Commas "," are removed, as these would convert to dots ".". The names 
 are changed into lower case. Hyphens are removed, as these too would convert to dots. Next open 
 and close brackets are also removed as these too would be converted to dots. Next the datasets
 are read using the datasets functions.
