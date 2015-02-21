@@ -1,7 +1,3 @@
-# insures that the data table package is loaded
-install.packages("data.table")
-install.packages("dplyr")
-
 # create a vector of names
 
 createVariableNames <- function(name, len){
@@ -21,8 +17,8 @@ createVariableNames <- function(name, len){
 }
 
 # loads the data.table and dplyr 
-library(data.table)
-library(dplyr)
+require(data.table)
+require(dplyr)
 
 # function to read either the test directory or the train directory
 
@@ -58,10 +54,12 @@ readSet <- function(directory, x_labels){
         # read in the X_ file with the colnames as the features
         # read in the Y_ file with the colnames activity
         result <- data.table(
-                        cbind(read.table(subjectFileName, col.names=c("subjectid")), 
-                                read.table(xFileName, col.names=x_labels), 
-                                read.table(yFileName, col.names="activityid"))
+                        cbind(fread(subjectFileName, sep=' '), 
+                              fread(xFileName, sep=' '), 
+                              fread(yFileName, sep=' '))
         )
+        
+        colnames(result) <- c("subjectid", x_labels,"activityid")
         
         # go into the the inertial signals dir
         setwd("Inertial Signals")
@@ -76,7 +74,7 @@ readSet <- function(directory, x_labels){
                 signalName <- gsub(paste0(directory,".txt"),"", signalFile)
                 
                 result <- cbind(result, 
-                                read.table(signalFile, col.names=createVariableNames(signalName, 128)))
+                                fread(signalFile, col.names=createVariableNames(signalName, 128)))
         }
         
         # reset directory
@@ -122,14 +120,14 @@ run_analysis <- function(){
         
         # Get the descriptive names of the activities
         
-        activity_labels <- read.table("activity_labels.txt")
+        activity_labels <- fread("activity_labels.txt")
         
         # first get the names of features 
         
-        features <- read.table("features.txt")
+        features <- fread("features.txt", sep = ' ')
         
         # substitute out the commas 
-        x_labels <- sub("\\,","",features[,2])
+        x_labels <- sub("\\,","",features$V2)
         
         # remove the upper case values
         x_labels <- tolower(x_labels)
