@@ -6,8 +6,7 @@ The purpose of this readme is to demonstrate how the scripts work to transform t
 original set of files to the tidy data. The source file was downloaded from 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
-The contents were extracted and the analysis files should be located with this extracted 
-main directory. Therefore the steps to run the analysis are as follows:
+The steps to run the analysis are as follows:
 
 Step 1. Run R version 3.1.2. 
 
@@ -19,6 +18,7 @@ Step 3. Run the command: run_analysis()
 
 The run_analysis.R contains all the functions for doing the analysis. The libraries data.table
 and dplyr are required hence referenced at the top. There are no missing values in the tidy dataset.
+The top level function run_analysis downloads the file, and carries out the merging and naming.
 
 ### createVariableNames Function
 
@@ -54,12 +54,18 @@ merge is simpler.
 
 The run_analysis function uses the readset function to read the raw data files, depending on the name 
 of the datasets. Run analysis creates a new directory for the data called data. The function 
-downloads the data from the online source given above to a file named getdata.zip located in this 
-directory and outputs the date. The function extracts this data within a "data" directory. 
+downloads the data from the online source given above to a file named getdata.zip and outputs the 
+date. The function extracts this data within a "data" directory. 
 
 The function reads the activity names file activity_labels. The function reads the features.txt 
 that lists the names of the X labels. A number of filters are run on these names as they would 
 not be ideal. Commas "," are removed, as these would convert to dots ".". The names 
 are changed into lower case. Hyphens are removed, as these too would convert to dots. Next open 
 and close brackets are also removed as these too would be converted to dots. Next the datasets
-are read using the datasets functions.
+are read using the readSet function. These datasets are merged using rbind. The columns are then
+filtered by the words mean or std appearing in the filename, and the first 2 rows that feature
+the activity id and subject id are also filtered. The merged dataset is outputted. Finally the 
+aggregate function is used to get the averages over activity and subject identifiers. The
+descriptive names, with underscores and capitals removed are from the activity names and these
+are added as labels. The activity and subject columns are also converted to factors. Finally the
+files for the analysis are deleted.

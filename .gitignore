@@ -1,0 +1,5 @@
+activity_labels.txt
+*.zip
+data/UCI HAR Dataset/features.txt
+*.txt
+problems.R

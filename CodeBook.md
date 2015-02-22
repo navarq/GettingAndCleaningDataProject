@@ -13,50 +13,96 @@ Samsung II smart phones strapped on the waist of 30 volunteers. Using the embedd
 Each volunteer had perfomed six activities. The data orginal came from the Human Activity Recognition Using 
 Smartphones Dataset. With the authors Jorge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto.
 
+Before transformation the original 2 datasets test (2947 observations) and training (7352 observations) had 
+a total of 10299 observations and 1715 variables.
 
 EXTENT OF COLLECTION: 
 
-'features_info.txt': Shows information about the variables used on the feature vector.
+'run_anal'
 
-'features.txt': List of all features.
+'merged.txt': This is the 
 
-- 'activity_labels.txt': Links the class labels with their activity name.
-
-2 data sets. Each data set contains:
-
-- 'train/X_train.txt': Training set.
-
-- 'train/y_train.txt': Training labels.
-
-- 'test/X_test.txt': Test set.
-
-- 'test/y_test.txt': Test labels.
-
-The following files are available for the train and test data. Their descriptions are equivalent. 
-
-- 'train/subject_train.txt': Each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. 
-
-- 'train/Inertial Signals/total_acc_x_train.txt': The acceleration signal from the smartphone accelerometer X axis in standard gravity units 'g'. Every row shows a 128 element vector. The same description applies for the 'total_acc_x_train.txt' and 'total_acc_z_train.txt' files for the Y and Z axis. 
-
-- 'train/Inertial Signals/body_acc_x_train.txt': The body acceleration signal obtained by subtracting the gravity from the total acceleration. 
-
-- 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
-
-
-- subjectVsActivity.txt: Contains the average over every variable with column names as the activities the users
-
-
-Before transformation the original 2 datasets test (2947 observations) and training (7352 observations) had 
-a total of 10299 observations and 1715 variables.
   
 Codebook for test and train datasets 
 
-
-
-
-
-
 CODEBOOK:
 
+Variable Name				Position		Values or Explaination
+activityid 					1				The activity identifier, possible values 1-6, Links the class labels with their activity name.
+subjectid					2				The subject identifier, Each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. 
+tbodyaccmean				3-5 		    x,y,z mean of triaxial acceleration from the accelerometer				
+tbodyaccstd					6-8				x,y,z standard deviation of the triaxial acceleration 
+tgravityaccmean				9-11		    x,y,z mean of the triaxial gravitational component the sensor acceleration signal
+tgravityaccstd				12-14			x,y,z standard deviation of the  triaxial gravitational component
+tbodyaccjerkmeanx			15-16			x,y,z mean of the body motion component of sensor acceleration signal
+tbodyaccjerkstd				17-19			x,y,z standard deviation of the body motion component of sensor acceleration signal
+"tbodygyromeanx"
+"tbodygyromeany"
+"tbodygyromeanz"
+"tbodygyrostdx"
+"tbodygyrostdy"
+"tbodygyrostdz"
+"tbodygyrojerkmeanx"
+"tbodygyrojerkmeany"
+"tbodygyrojerkmeanz"
+"tbodygyrojerkstdx"
+"tbodygyrojerkstdy"
+"tbodygyrojerkstdz"
+"tbodyaccmagmean"
+"tbodyaccmagstd"
+"tgravityaccmagmean"
+"tgravityaccmagstd"
+"tbodyaccjerkmagmean"
+"tbodyaccjerkmagstd"
+"tbodygyromagmean"
+"tbodygyromagstd"
+"tbodygyrojerkmagmean"
+"tbodygyrojerkmagstd"
+"fbodyaccmeanx"
+"fbodyaccmeany"
+"fbodyaccmeanz"
+"fbodyaccstdx"
+"fbodyaccstdy"
+"fbodyaccstdz"
+"fbodyaccmeanfreqx"
+"fbodyaccmeanfreqy"
+"fbodyaccmeanfreqz"
+"fbodyaccjerkmeanx"
+"fbodyaccjerkmeany"
+"fbodyaccjerkmeanz"
+"fbodyaccjerkstdx"
+"fbodyaccjerkstdy"
+"fbodyaccjerkstdz"
+"fbodyaccjerkmeanfreqx"
+"fbodyaccjerkmeanfreqy"
+"fbodyaccjerkmeanfreqz"
+"fbodygyromeanx"
+"fbodygyromeany"
+"fbodygyromeanz"
+"fbodygyrostdx"
+"fbodygyrostdy"
+"fbodygyrostdz"
+"fbodygyromeanfreqx"
+"fbodygyromeanfreqy"
+"fbodygyromeanfreqz"
+"fbodyaccmagmean"
+"fbodyaccmagstd"
+"fbodyaccmagmeanfreq"
+"fbodybodyaccjerkmagmean"
+"fbodybodyaccjerkmagstd"
+"fbodybodyaccjerkmagmeanfreq"
+"fbodybodygyromagmean"
+"fbodybodygyromagstd"
+"fbodybodygyromagmeanfreq"
+"fbodybodygyrojerkmagmean"
+"fbodybodygyrojerkmagstd"
+"fbodybodygyrojerkmagmeanfreq"
+"angletbodyaccmeangravity"
+"angletbodyaccjerkmeangravitymean"
+"angletbodygyromeangravitymean"
+"angletbodygyrojerkmeangravitymean"
+"anglexgravitymean"
+"angleygravitymean"
+"anglezgravitymean"
+"activity"					activity name refered to by activityid above		
 
-The n
