@@ -1,7 +1,8 @@
 
 # loads the data.table and dplyr 
 require(data.table)
-
+require(dplyr)
+require(reshape2)
 # create a vector of names
 
 createVariableNames <- function(name, len){
@@ -23,7 +24,7 @@ createVariableNames <- function(name, len){
 
 # function to read either the test directory or the train directory
 
-readSet <- function(directory, x_labels, lengthOfSequence){
+readSet <- function(directory, x_labels){
         ## 'directory' is a character vector of length 1 indicating
         ## the location of the data set files
         
@@ -58,21 +59,12 @@ readSet <- function(directory, x_labels, lengthOfSequence){
         result <- cbind(fread(subjectFileName))
         # rename the only column tota 
         setnames(result,"V1","subjectid")
-        
-        # add a row index column by reference
-        startAt <- 0;
-        if(lengthOfSequence==1){
-                startAt<- 1
-        } 
-        else {
-                startAt = lengthOfSequence + 1        
-        }
-                
-        index <- as.character(seq(startAt,nrow(result)))
-        result[,':='(rowid, index)]
+            
+        #index <- as.character(seq(startAt,nrow(result)))
+        #result[,':='(rowid, index)]
         
         # set this index as the key
-        setkey(result, rowid)
+        #setkey(result, rowid)
         
         # read in the Y_ file with the column name activityid
         result[, activityid:=fread(yFileName)]
@@ -81,7 +73,7 @@ readSet <- function(directory, x_labels, lengthOfSequence){
         # unfortunately an issue with fread and double spaces
         # prevents is use here
         result <- cbind(result,as.data.table(read.table(xFileName, col.names=x_labels)))        
-
+        
         # go into the the inertial signals dir
         setwd("Inertial Signals")
         
@@ -95,7 +87,7 @@ readSet <- function(directory, x_labels, lengthOfSequence){
                 signalName <- gsub(paste0(directory,".txt"),"", signalFile)
                 
                 result <- cbind(result, 
-                                read.table(signalFile, col.names=createVariableNames(signalName, 128)))
+                                as.data.table(read.table(signalFile, col.names=createVariableNames(signalName, 128))))
         }
         
         # reset directory
@@ -165,11 +157,63 @@ run_analysis <- function(){
         
         # Read files as flat tables
         #test <- readSet("test", x_labels, 1)
-        test <- readSet("test", x_labels, meanStdColumns)
+        test <- readSet("test", x_labels)
         #train <- readSet("train", x_labels, nrow(test))
-        train <- readSet("train", x_labels, meanStdColumns)
+        train <- readSet("train", x_labels)
         setwd(old.dir)
         
-        # Merge the data frames
-        joinData <- rbind(trainData, testData)
+        # Merge the data frames Step 1
+        joinData <- rbind(test, train)
+        
+        # Step 2 extract only the measurements for mean and 
+        # standard deviation
+        
+        meanStdColumns <- meanStdColumns + 2
+        
+        selectColumns <- c(1,2,meanStdColumns)
+        
+        # the new dataset, 88 columns, 10299 observations
+        
+        narrow <- select(joinData,selectColumns)
+        write.table(narrow,"merged.txt",row.names=FALSE)
+        
+        # add an index by reference
+        index <- as.character(seq(nrow(narrow)))
+        narrow[,':='(rowid,index)]
+        setkey(narrow, rowid)
+        
+        # change activityid into a factor
+        narrow$activityid <- factor(narrow$activityid)
+        # change subjectid into a factor
+        narrow$subjectid <- factor(narrow$subjectid)
+        
+        # Apply activity labels, Step 3
+        narrow$activity <- factor(narrow$activityid, 
+                                  levels=activity_labels$V1,
+                                  labels=activity_labels$V2)
+        
+        fullMelt<-melt(narrow, id=c("rowid","activityid","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
+        
+        
+        dataMelt<-melt(narrow, id=c("activityid","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
+        
+        # Cast of data by activity, and average of those values
+        dataActivity<- dcast(dataMelt, activityid ~ variable,mean)
+        # Column bind with the descriptive activity names
+        dataActivity<-cbind(dataActivity, activity_labels$V2)
+        # rename the last newly added column
+        colnames(dataActivity)[ncol(dataActivity)<-"activity"
+                     
+        # Cast of data by subject, and average of those values
+        dataSubject <- dcast(dataMelt, subjectid ~ variable, mean)
+        
+        # Get the averages of everything, useful to compare 
+        # different activities between subjects
+        fullCast<-acast(dataMelt, subjectid ~ activityid, mean)
+        # Rename the column names to match
+        colnames(fullCast)<-activity_labels$V2
+        
+        write.table("subjectsVsActivity.txt")
+        
+        0
 }
