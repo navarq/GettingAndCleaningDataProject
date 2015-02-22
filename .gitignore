@@ -3,3 +3,10 @@ activity_labels.txt
 data/UCI HAR Dataset/features.txt
 *.txt
 problems.R
+r_solution.R
+debuf_fread.R
+debug_fread_solve.R
+adding_desc_actvity_names.R
+*.Rhistory
+.RData
+inertial_signals.R

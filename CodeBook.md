@@ -48,57 +48,39 @@ tbodyaccmagmean				32				mean of the magnitude of the time domain signal of body
 tbodyaccmagstd				33				standard deviation of the magnitude of the time domain signal of body acceleration calculated using the Euclidean norm
 tgravityaccmagmean			34				mean of the magnitude of the time domain gravity acceleration signal
 tgravityaccmagstd			35				standard deviation of the magnitude of the time domain gravity acceleration signal
-tbodyaccjerkmagmean			36				magitude of the mean of the body linear acceleration and angular velocity derived in time
-tbodyaccjerkmagstd
-"tbodygyromagmean"
-"tbodygyromagstd"
-"tbodygyrojerkmagmean"
-"tbodygyrojerkmagstd"
-"fbodyaccmeanx"
-"fbodyaccmeany"
-"fbodyaccmeanz"
-"fbodyaccstdx"
-"fbodyaccstdy"
-"fbodyaccstdz"
-"fbodyaccmeanfreqx"
-"fbodyaccmeanfreqy"
-"fbodyaccmeanfreqz"
-"fbodyaccjerkmeanx"
-"fbodyaccjerkmeany"
-"fbodyaccjerkmeanz"
-"fbodyaccjerkstdx"
-"fbodyaccjerkstdy"
-"fbodyaccjerkstdz"
-"fbodyaccjerkmeanfreqx"
-"fbodyaccjerkmeanfreqy"
-"fbodyaccjerkmeanfreqz"
-"fbodygyromeanx"
-"fbodygyromeany"
-"fbodygyromeanz"
-"fbodygyrostdx"
-"fbodygyrostdy"
-"fbodygyrostdz"
-"fbodygyromeanfreqx"
-"fbodygyromeanfreqy"
-"fbodygyromeanfreqz"
-"fbodyaccmagmean"
-"fbodyaccmagstd"
-"fbodyaccmagmeanfreq"
-"fbodybodyaccjerkmagmean"
-"fbodybodyaccjerkmagstd"
-"fbodybodyaccjerkmagmeanfreq"
-"fbodybodygyromagmean"
-"fbodybodygyromagstd"
-"fbodybodygyromagmeanfreq"
-"fbodybodygyrojerkmagmean"
-"fbodybodygyrojerkmagstd"
-"fbodybodygyrojerkmagmeanfreq"
-"angletbodyaccmeangravity"
-"angletbodyaccjerkmeangravitymean"
-"angletbodygyromeangravitymean"
-"angletbodygyrojerkmeangravitymean"
-"anglexgravitymean"
-"angleygravitymean"
-"anglezgravitymean"
-"activity"					activity name refered to by activityid at position one		
+tbodyaccjerkmagmean			36				magitude of the mean of the body linear acceleration derived in time
+tbodyaccjerkmagstd			37				magitude of the standard deviation of the body linear acceleration in time 
+tbodygyromagmean			38				magitude of the mean of the and angular velocity derived in time used on the angle variable
+tbodygyromagstd				39				magitude of the standard deviation of the and angular velocity derived in time used on the angle variable
+tbodygyrojerkmagmean		40				magitude of the mean of the angular velocity signal derived in time used on the angle variable
+tbodygyrojerkmagstd			41				magitude of the standard deviation of the angular velocity signal derived in time used on the angle variable
+fbodyaccmean				42-45			XYZ mean frequency of the body triaxial acceleration
+fbodyaccstd					46-48			XYZ standard deviation frequency of the body triaxial acceleration
+fbodyaccmeanfreq			49-51			XYZ weighted average of the frequency components to obtain a mean frequency  body triaxial acceleration
+fbodyaccjerkmean			52-54			XYZ mean frequency of body linear acceleration derived in time to obtain Jerk signals
+fbodyaccjerkstd				55-57			XYZ standard deviation frequency of body linear acceleration derived in time to obtain Jerk signals
+fbodyaccjerkmeanfreq		58-60			XYZ Weighted average of the frequency components to obtain a mean frequency of body linear acceleration derived in time to obtain Jerk signals
+fbodygyromean				61-63			XYZ	mean frequency of body angular velocity averaging the signals in a signal window sample. These are used on the angle() variable
+fbodygyrostd				64-66			XYZ standard deviation frequency of body angular velocity averaging the signals in a signal window sample. These are used on the angle() variable
+fbodygyromeanfreq			67-69			XYZ Weighted average of the frequency components of body angular velocity signal to obtain a mean frequency. used on the angle() variable
+fbodyaccmagmean				70				magnitude frequncy of the mean of body the acceleration
+fbodyaccmagstd				71				magnitude frequncy of the standard deviation of body the acceleration
+fbodyaccmagmeanfreq			72				Body acceleration Weighted average of the frequency components to obtain a mean frequency
+fbodybodyaccjerkmagmean		73				mean frequency magnitude of the body linear acceleration and angular velocity were derived in time to obtain Jerk signals
+fbodybodyaccjerkmagstd		74				standard deviation frequency magnitude of the body linear acceleration and angular velocity were derived in time to obtain Jerk signals
+fbodybodyaccjerkmagmeanfreq 75				Weighted average of the frequency body linear acceleration derived in fequency components to obtain a mean frequency used on angle variable 
+fbodybodygyromagmean		76				Magnitude mean frequency of the angular velocity
+fbodybodygyromagstd			77				Magnitude standard deviation frequency of the angular velocity
+fbodybodygyromagmeanfreq	78				weighted average of the frequency angular velocity components to obtain a mean frequency
+fbodybodygyrojerkmagmean	79				Magnitude mean frequency  of the body linear acceleration and angular velocity were derived in time to obtain Jerk signals  used on the angle() variable
+fbodybodygyrojerkmagstd		80				Magnitude standard deviation frequency  of the body linear acceleration and angular velocity were derived in time to obtain Jerk signals  used on the angle() variable
+fbodybodygyrojerkmagmeanfreq	81			Weighted average of the frequency of the body linear acceleration and angular velocity  derived in time to obtain Jerk signals to obtain a mean frequency
+angletbodyaccmeangravity		82			Mean of the Angle of the body linear acceleration time domain signal of the gravity acceleration component 
+angletbodyaccjerkmeangravitymean 83			Mean of the Angle time domain signal of the gravity acceleration component  obtained by averaging the signals in a signal window sample. used on the angle() variable.
+angletbodygyromeangravitymean	 84			Mean of the Angle of the angular velocty time domain signal of the gravity acceleration component  obtained by averaging the signals in a signal window sample. used on the angle() variable.
+angletbodygyrojerkmeangravitymean 85		angular velocity derived in time to obtain Jerk signals as a mean of the time domain signal
+anglexgravitymean 			86				X component mean of the angle of the gravity acceleration signal				
+angleygravitymean  			87				Y component mean of the angle of the gravity acceleration signal
+anglezgravitymean 			88				Z component mean of the angle of the gravity acceleration signal
+activity					89				activity name refered to by activityid at position one		
 
