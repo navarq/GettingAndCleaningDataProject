@@ -18,7 +18,7 @@ Step 3. Run the command: run_analysis()
 ## Functions
 
 The run_analysis.R contains all the functions for doing the analysis. The libraries data.table
-and dplyr are required hence referenced at the top.
+and dplyr are required hence referenced at the top. There are no missing values in the tidy dataset.
 
 ### createVariableNames Function
 

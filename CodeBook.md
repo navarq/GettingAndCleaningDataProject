@@ -4,6 +4,8 @@
 
 This file describes the variables, the data and any transformations that I have performed to clean up the data.
 
+STUDYNAME: Wearable Computing.
+
 SUMMARY: The source of the file is a study into wearable computing. The data for this code book has been taken using 
 Samsung II smart phones strapped on the waist of 30 volunteers. Using the embedded accelerometer and gyroscope, 
 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz was collected.
@@ -40,13 +42,21 @@ The following files are available for the train and test data. Their description
 
 - 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
 
+
+- subjectVsActivity.txt: Contains the average over every variable with column names as the activities the users
+
+
 Before transformation the original 2 datasets test (2947 observations) and training (7352 observations) had 
 a total of 10299 observations and 1715 variables.
   
 Codebook for test and train datasets 
 
 
-STUDYNAME:
+
+
+
 
 CODEBOOK:
 
+
+The n

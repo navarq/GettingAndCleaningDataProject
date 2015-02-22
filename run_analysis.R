@@ -192,7 +192,7 @@ run_analysis <- function(){
                                   levels=activity_labels$V1,
                                   labels=activity_labels$V2)
         
-        fullMelt<-melt(narrow, id=c("rowid","activityid","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
+        fullMelt<-melt(narrow, id=c("rowid","activity","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
         
         
         dataMelt<-melt(narrow, id=c("activityid","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
@@ -213,7 +213,9 @@ run_analysis <- function(){
         # Rename the column names to match
         colnames(fullCast)<-activity_labels$V2
         
+        result<-aggregate(narrow, by=list(narrow$activityid,narrow$subjectid), FUN=mean)
+        
         write.table("subjectsVsActivity.txt")
         
-        0
+        result
 }
