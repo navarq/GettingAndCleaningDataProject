@@ -156,10 +156,12 @@ run_analysis <- function(){
         meanStdColumns<-grep("[m][e][a][n]|[s][t][d]", x_labels)
         
         # Read files as flat tables
-        #test <- readSet("test", x_labels, 1)
+        
         test <- readSet("test", x_labels)
-        #train <- readSet("train", x_labels, nrow(test))
+        
         train <- readSet("train", x_labels)
+        
+        # reset to original folder
         setwd(old.dir)
         
         # Merge the data frames Step 1
@@ -176,46 +178,27 @@ run_analysis <- function(){
         
         narrow <- select(joinData,selectColumns)
         write.table(narrow,"merged.txt",row.names=FALSE)
+                 
+        result<-aggregate(narrow, by=list(activityid=narrow$activityid,subjectid=narrow$subjectid), FUN=mean)
+        #remove additional columns
+        result[,4] <- NULL
+        result[,3] <- NULL
         
-        # add an index by reference
-        index <- as.character(seq(nrow(narrow)))
-        narrow[,':='(rowid,index)]
-        setkey(narrow, rowid)
         
         # change activityid into a factor
-        narrow$activityid <- factor(narrow$activityid)
+        result$activityid <- factor(result$activityid)
         # change subjectid into a factor
-        narrow$subjectid <- factor(narrow$subjectid)
+        result$subjectid <- factor(result$subjectid)
         
         # Apply activity labels, Step 3
-        narrow$activity <- factor(narrow$activityid, 
+        result$activity <- factor(result$activityid, 
                                   levels=activity_labels$V1,
                                   labels=activity_labels$V2)
         
-        fullMelt<-melt(narrow, id=c("rowid","activity","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
+        # output the tidy data table
+        write.table(result, "tidy.txt", row.names=FALSE)
+        # delete the directories and files
+        unlink("./data",recursive = TRUE, force=TRUE)
         
-        
-        dataMelt<-melt(narrow, id=c("activityid","subjectid"), measure.vars=c(grep("[m][e][a][n]|[s][t][d]",x_labels, value=TRUE)))
-        
-        # Cast of data by activity, and average of those values
-        dataActivity<- dcast(dataMelt, activityid ~ variable,mean)
-        # Column bind with the descriptive activity names
-        dataActivity<-cbind(dataActivity, activity_labels$V2)
-        # rename the last newly added column
-        colnames(dataActivity)[ncol(dataActivity)<-"activity"
-                     
-        # Cast of data by subject, and average of those values
-        dataSubject <- dcast(dataMelt, subjectid ~ variable, mean)
-        
-        # Get the averages of everything, useful to compare 
-        # different activities between subjects
-        fullCast<-acast(dataMelt, subjectid ~ activityid, mean)
-        # Rename the column names to match
-        colnames(fullCast)<-activity_labels$V2
-        
-        result<-aggregate(narrow, by=list(narrow$activityid,narrow$subjectid), FUN=mean)
-        
-        write.table("subjectsVsActivity.txt")
-        
-        result
+        0
 }
